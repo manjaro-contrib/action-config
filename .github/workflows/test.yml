@@ -1,0 +1,24 @@
+name: 'test'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  config:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: check out repo for action code
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3
+      - name: config
+        id: config
+        uses: ./
+      - name: echo
+        run: |
+          echo repo: ${{ steps.config.outputs.repo }}
+          echo branch: ${{ steps.config.outputs.branch }}
+          echo db: ${{ steps.config.outputs.db }}

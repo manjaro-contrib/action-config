@@ -1,0 +1,24 @@
+name: 'config action'
+description: 'reads the repo configuration'
+
+outputs:
+  repo:
+    description: upstream repository
+    value: ${{ steps.config.outputs.repo }}
+  branch:
+    description: upstream branch
+    value: ${{ steps.config.outputs.branch }}
+  db:
+    description: database to publish to
+    value: ${{ steps.config.outputs.db }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: read repo configuration
+      id: config
+      shell: bash
+      run: |
+        echo "repo=$(jq -r '.repo' .github/config.json)" >>$GITHUB_OUTPUT
+        echo "branch=$(jq -r '.branch' .github/config.json)" >>$GITHUB_OUTPUT
+        echo "db=$(jq -r '.db' .github/config.json)" >>$GITHUB_OUTPUT
